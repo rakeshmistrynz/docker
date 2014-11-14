@@ -1,7 +1,7 @@
 FROM debian:wheezy
 MAINTAINER chadrien <chadrien@chadrien.fr>
 
-RUN groupadd -r irssi && useradd -r -m -g irssi irssi
+RUN groupadd irssi && useradd -m -g irssi irssi
 
 RUN apt-get update \
 	&& apt-get install -y curl \
@@ -28,8 +28,7 @@ RUN buildDeps='clang libglib2.0-dev libncurses-dev libssl-dev libperl-dev make';
 	&& apt-get autoremove -y \
 	&& runDeps='libglib2.0-0' \
 	&& apt-get update && apt-get install -y $runDeps \
-        && rm -rf /var/lib/apt/lists/* \
-	
+        && rm -rf /var/lib/apt/lists/*
 
 USER irssi
 VOLUME "/home/irssi/.irssi"
