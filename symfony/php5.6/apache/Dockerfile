@@ -16,4 +16,8 @@ RUN buildRequirements="libicu-dev g++" \
 
 RUN curl -sSL https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
-    && apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+    && apt-get update \
+    && apt-get install -y zlib1g-dev git \
+    && docker-php-ext-install zip \
+    && apt-get purge -y --auto-remove zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
