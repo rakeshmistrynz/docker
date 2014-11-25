@@ -4,7 +4,6 @@ MAINTAINER chadrien <chadrien@chadrien.fr>
 RUN buildRequirements="libicu-dev g++" \
     && apt-get update && apt-get install -y ${buildRequirements} \
     && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install opcache \
     && docker-php-ext-install intl \
     && docker-php-ext-install iconv \
     && docker-php-ext-install mbstring \
