@@ -13,3 +13,6 @@ RUN buildRequirements="libicu-dev g++" \
     && rm -rf /var/lib/apt/lists/* \
     && echo "date.timezone=Europe/Paris" >> /usr/local/etc/php/php.ini \
     && echo "short_open_tag=Off" >> /usr/local/etc/php/php.ini
+
+RUN curl -sSL https://getcomposer.org/installer | php \
+    && mv composer.phar /usr/local/bin/composer
