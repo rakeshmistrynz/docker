@@ -16,4 +16,5 @@ RUN buildRequirements="libicu-dev g++" \
     && echo "short_open_tag=Off" >> /usr/local/etc/php/php.ini
 
 RUN curl -sSL https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer
+    && mv composer.phar /usr/local/bin/composer \
+    && apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
