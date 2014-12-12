@@ -20,11 +20,15 @@ RUN requirements="libpng12-dev libmcrypt-dev libcurl3-dev libxml2-dev" \
 
 ENV MAGENTO_VERSION 0.1.0-alpha107
 RUN curl -sSL https://github.com/magento/magento2/archive/${MAGENTO_VERSION}.tar.gz -o magento2.tar.gz \
-    && tar -xzf magento2.tar.gz -C /var/www/html --strip 1 \
+    && tar -xzf magento2.tar.gz -C /var/www --strip 1 \
     && rm magento2.tar.gz \
-    && cd /var/www/html \
-    && composer -n install \
+    && cd /var/www \
+    && rm -rf html && ln -s /var/www/pub html && ln -s /var/www/setup html/ \
+    && composer -n --no-dev install \
     && cd setup \
-    && composer -n install
+    && composer -n --no-dev install
+
+RUN chown -R www-data:www-data /var/www
+RUN a2enmod rewrite
 
 WORKDIR /var/www/html
