@@ -1,14 +1,7 @@
 FROM php:5.5-apache
 MAINTAINER chadrien <chadrien@chadrien.fr>
 
-ENV COMPOSER_VERSION 1.0.0-alpha9
-RUN curl -sSL https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar -o /usr/bin/composer \
-    && chmod +x /usr/bin/composer \
-    && apt-get update && apt-get install -y zlib1g-dev git && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install zip \
-    && apt-get purge -y --auto-remove zlib1g-dev
-
-RUN requirements="libpng12-dev libjpeg-dev libmcrypt4 libmcrypt-dev libcurl3-dev libxml2-dev" \
+RUN requirements="libpng12-dev libjpeg-dev libjpeg62-turbo libmcrypt4 libmcrypt-dev libcurl3-dev libxml2-dev" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/lib \
@@ -18,6 +11,13 @@ RUN requirements="libpng12-dev libjpeg-dev libmcrypt4 libmcrypt-dev libcurl3-dev
     && docker-php-ext-install soap \
     && requirementsToRemove="libpng12-dev libjpeg-dev libmcrypt-dev libcurl3-dev libxml2-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
+
+RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer \
+    && chmod +x /usr/bin/composer \
+    && apt-get update && apt-get install -y zlib1g-dev git && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install zip \
+    && apt-get purge -y --auto-remove zlib1g-dev \
+    && composer selfupdate
 
 ENV MAGENTO_VERSION 0.42.0-beta1
 RUN curl -sSL https://github.com/magento/magento2/archive/${MAGENTO_VERSION}.tar.gz -o magento2.tar.gz \
