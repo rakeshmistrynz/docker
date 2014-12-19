@@ -25,7 +25,9 @@ RUN curl -sSL https://github.com/magento/magento2/archive/${MAGENTO_VERSION}.tar
     && rm magento2.tar.gz \
     && cd /var/www \
     && rm -rf html && ln -s /var/www/pub html && ln -s /var/www/setup html/ \
-    && composer -n --no-dev install
+    && composer -n --no-dev install \
+    && composer dumpautoload
 
+RUN usermod -u 1000 www-data
 RUN chown -R www-data:www-data /var/www
 RUN a2enmod rewrite
