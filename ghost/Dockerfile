@@ -1,7 +1,7 @@
 FROM node:0.10-slim
 MAINTAINER chadrien <chadrien@chadrien.fr>
 
-ENV GHOST_VERSION 0.5.5
+ENV GHOST_VERSION 0.5.8
 ENV GHOST_URL https://ghost.org/zip/ghost-${GHOST_VERSION}.zip
 ENV GHOST_DIR /usr/src/ghost
 
