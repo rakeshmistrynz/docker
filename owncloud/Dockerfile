@@ -24,7 +24,7 @@ RUN requirements="libpng12-dev libssl-dev libicu-dev libicu52 g++ zlib1g-dev lib
     && requirementsToRemove="libpng12-dev libssl-dev libicu-dev g++ zlib1g-dev libgmp3-dev libbz2-dev libmcrypt-dev libmagickwand-dev libjpeg-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
-ENV OWNCLOUD_VERSION 7.0.4
+ENV OWNCLOUD_VERSION 8.0.0
 
 RUN apt-get update && apt-get install -y bzip2 && rm -rf /var/lib/apt/lists/* \
     && curl -sSL https://download.owncloud.org/community/owncloud-${OWNCLOUD_VERSION}.tar.bz2 -o owncloud.tar.bz2 \
