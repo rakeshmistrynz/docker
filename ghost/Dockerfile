@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:0.10-slim
 MAINTAINER chadrien <chadrien@chadrien.fr>
 
 ENV GHOST_VERSION 0.5.5
