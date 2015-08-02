@@ -1,4 +1,3 @@
-
 # Magento 2 beta
 
 If you want to try Magento 2 easily, just adapt this docker commands with your custom values :

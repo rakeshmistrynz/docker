@@ -1,7 +1,7 @@
-FROM php:5.5-apache
+FROM php:5.6-apache
 MAINTAINER chadrien <chadrien@chadrien.fr>
 
-RUN requirements="libpng12-dev libjpeg-dev libjpeg62-turbo libmcrypt4 libmcrypt-dev libcurl3-dev libxml2-dev" \
+RUN requirements="libpng12-dev libjpeg-dev libjpeg62-turbo libmcrypt4 libmcrypt-dev libcurl3-dev libxml2-dev libxslt-dev libicu-dev libicu52" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure gd --with-jpeg-dir=/usr/lib \
@@ -9,7 +9,9 @@ RUN requirements="libpng12-dev libjpeg-dev libjpeg62-turbo libmcrypt4 libmcrypt-
     && docker-php-ext-install mcrypt \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install soap \
-    && requirementsToRemove="libpng12-dev libjpeg-dev libmcrypt-dev libcurl3-dev libxml2-dev" \
+    && docker-php-ext-install xsl \
+    && docker-php-ext-install intl \
+    && requirementsToRemove="libpng12-dev libjpeg-dev libmcrypt-dev libcurl3-dev libxml2-dev libxslt-dev libicu-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer \
@@ -19,9 +21,18 @@ RUN curl -sSL https://getcomposer.org/composer.phar -o /usr/bin/composer \
     && apt-get purge -y --auto-remove zlib1g-dev \
     && composer selfupdate
 
-RUN sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www/" /etc/apache2/apache2.conf
+RUN sed -i "s/DocumentRoot \/var\/www\/html/DocumentRoot \/var\/www/" /etc/apache2/apache2.conf \
+    && rm -rf /var/www/html
 
-VOLUME ["/var/www"]
+ENV MAGENTO_VERSION 1.0.0-beta
+RUN curl -sSL https://github.com/magento/magento2/archive/${MAGENTO_VERSION}.tar.gz -o magento2.tar.gz \
+    && tar -xzf magento2.tar.gz -C /var/www --strip 1 \
+    && rm magento2.tar.gz \
+    && cd /var/www \
+    && rm -rf html && ln -s /var/www/pub html && ln -s /var/www/setup html/ \
+    && composer -n --no-dev install \
+    && composer dumpautoload
+
 WORKDIR /var/www
 
 RUN usermod -u 1000 www-data
