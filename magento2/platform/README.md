@@ -1,17 +1,17 @@
 # Magento 2 beta for developers
 
-Requirements: Composer and Fig on your machine
+Requirements: Composer and Docker Compose on your machine
 
-First you need to create a new Magento project:
+First you need to create a new Magento 2 project:
 
 ```bash
-composer create-project -n magento/product-community-edition magento2 0.42.0-beta1 && cd magento2
+composer create-project -n magento/product-community-edition magento2 1.0.0-beta1 && cd magento2
 ```
-Then you add a fig.yml file with your custom values:
+Then you add a `docker-compose.yml` file with your custom values:
 
 ```yaml
 web:
-  image: chadrien/magento2:5.5-apache
+  image: chadrien/magento2:5.6-apache
   links:
     - db
   ports:
@@ -30,10 +30,10 @@ db:
 Now you can start your containers:
 
 ```shell
-fig up -d
-fig port web 80
+docker-compose up -d
+docker-compose port web 80
 ```
 
-Then open your browser to http://127.0.0.1:PORT to start Magento2 setup wizard.
+Then open your browser to `http://127.0.0.1:PORT` to start Magento2 setup wizard.
 
 You are now ready to develop your Magento modules in `app/code` and your changes will be visible in Docker.
