@@ -25,14 +25,14 @@
       dest: "../{% if item.full %}full{% else %}platform{% endif %}/{{ item.version }}/{{ item.server }}/Dockerfile"
     with_items: "{{ variations }}"
   - name: build image
-    shell: "docker build --pull --force-rm -t chadrien/magento2:{{ item.version }}-{{ item.server }} ."
+    shell: "docker build --pull --force-rm -t chadrien/magento2:{{ item.version }}-{{ item.server }}{% if item.full %}-full-{{ item.magento_version }}{% endif %} ."
     args:
       chdir: "../{% if item.full %}full{% else %}platform{% endif %}/{{ item.version }}/{{ item.server }}"
     with_items: "{{ variations }}"
     tags:
       - building
   - name: push image
-    shell: "docker push chadrien/magento2:{{ item.version }}-{{ item.server }}"
+    shell: "docker push chadrien/magento2:{{ item.version }}-{{ item.server }}{% if item.full %}-full-{{ item.magento_version }}{% endif %}"
     with_items: "{{ variations }}"
     tags:
       - building
